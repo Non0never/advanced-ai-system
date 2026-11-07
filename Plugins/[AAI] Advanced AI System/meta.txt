@@ -1,0 +1,5 @@
+Name         = Advanced AI System
+Version = 2.7.4
+Essentials = 21.1,21.99,22
+Website      = https://github.com/Non0never/advanced-ai-system
+Credits      = Nononever
