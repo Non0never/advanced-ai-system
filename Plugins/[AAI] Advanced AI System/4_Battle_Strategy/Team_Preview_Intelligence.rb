@@ -342,10 +342,12 @@ class Battle
         player_party = pbParty(0)
 
         reserved_index = -1
-        if AdvancedAI::RESPECT_RESERVE_LAST_POKEMON &&
-           (defined?(AdvancedAI::RESERVE_LAST_POKEMON_STRICT) && AdvancedAI::RESERVE_LAST_POKEMON_STRICT) &&
-           ai_trainer.has_skill_flag?("ReserveLastPokemon")
-          reserved_index = trainer_party.length - 1
+        if AdvancedAI::RESPECT_RESERVE_LAST_POKEMON
+          tflags = (trainer.flags || []).map { |f| f.to_s.downcase }
+          reserves_ace = tflags.include?("reservelastpokemon") ||
+                         (trainer.respond_to?(:skill_level) && (trainer.skill_level || 0) >= 100)
+          reserves_ace = false if tflags.include?("antireservelastpokemon")
+          reserved_index = trainer_party.length - 1 if reserves_ace
         end
         best_lead = AdvancedAI.select_best_lead(self, trainer_party, player_party, reserved_index)
 
